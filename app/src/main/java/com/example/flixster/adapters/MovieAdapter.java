@@ -11,12 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.target.Target;
 import com.example.flixster.R;
 import com.example.flixster.models.Movie;
 
 import java.util.List;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
     List<Movie> movies;
 
     public MovieAdapter(List<Movie> movies) {
@@ -26,7 +29,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie, parent, false);
 
         return new ViewHolder(view);
     }
@@ -43,7 +46,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
         return movies.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvOverview;
         ImageView ivPoster;
 
@@ -61,12 +64,28 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder>{
 
             String image;
             int orientation = itemView.getResources().getConfiguration().orientation;
-            if(orientation == Configuration.ORIENTATION_LANDSCAPE)
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 image = movie.getBackdropPath();
-            else
+                Glide
+                        .with(itemView.getContext())
+                        .load(image)
+                        .override(200, Target.SIZE_ORIGINAL)
+                        .placeholder(R.drawable.television_placeholder)
+                        .transition(DrawableTransitionOptions.withCrossFade(4000))
+                        .transform(new RoundedCorners(20))
+                        .into(ivPoster);
+            } else {
                 image = movie.getPosterPath();
 
-            Glide.with(itemView.getContext()).load(image).into(ivPoster);
+                Glide
+                        .with(itemView.getContext())
+                        .load(image)
+                        .override(150, 100)
+                        .placeholder(R.drawable.television_placeholder)
+                        .transition(DrawableTransitionOptions.withCrossFade(4000))
+                        .transform(new RoundedCorners(20))
+                        .into(ivPoster);
+            }
         }
     }
 }
