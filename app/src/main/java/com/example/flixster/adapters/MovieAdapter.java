@@ -1,6 +1,7 @@
 package com.example.flixster.adapters;
 
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -30,7 +33,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie, parent, false);
-
+        view.setBackgroundColor(ContextCompat.getColor(parent.getContext(),R.color.navy));
         return new ViewHolder(view);
     }
 
@@ -60,7 +63,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
         public void bind(Movie movie) {
             tvTitle.setText(movie.getTitle());
+            tvTitle.setTextColor(ContextCompat.getColor(itemView.getContext(),R.color.white));
+            tvTitle.setTypeface(Typeface.DEFAULT_BOLD);
+            tvTitle.setTypeface(ResourcesCompat.getFont(itemView.getContext(),R.font.barrio));
             tvOverview.setText(movie.getOverview());
+            tvOverview.setTextColor(ContextCompat.getColor(itemView.getContext(),R.color.white));
 
             String image;
             int orientation = itemView.getResources().getConfiguration().orientation;
@@ -69,7 +76,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 Glide
                         .with(itemView.getContext())
                         .load(image)
-                        .override(200, Target.SIZE_ORIGINAL)
+                        .override(320)
                         .placeholder(R.drawable.television_placeholder)
                         .transition(DrawableTransitionOptions.withCrossFade(4000))
                         .transform(new RoundedCorners(20))
@@ -80,7 +87,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 Glide
                         .with(itemView.getContext())
                         .load(image)
-                        .override(150, 100)
+                        .override(180)
                         .placeholder(R.drawable.television_placeholder)
                         .transition(DrawableTransitionOptions.withCrossFade(4000))
                         .transform(new RoundedCorners(20))
