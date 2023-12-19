@@ -22,7 +22,7 @@ import com.example.flixster.models.Movie;
 
 import java.util.List;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     List<Movie> movies;
 
     public MovieAdapter(List<Movie> movies) {
@@ -31,17 +31,35 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie, parent, false);
-        view.setBackgroundColor(ContextCompat.getColor(parent.getContext(),R.color.navy));
-        return new ViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        RecyclerView.ViewHolder viewHolder = null;
+
+        if (viewType == 1) {
+            View v1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie_full_backdrop, parent, false);
+            v1.setBackgroundColor(ContextCompat.getColor(parent.getContext(),R.color.navy));
+            viewHolder = new ViewHolder2(v1);
+        }
+        if (viewType == 0) {
+            View v1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie, parent, false);
+            v1.setBackgroundColor(ContextCompat.getColor(parent.getContext(),R.color.navy));
+            viewHolder = new ViewHolder1(v1);
+        }
+
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Movie movie = movies.get(position);
+        if (holder.getItemViewType() == 0) {
+            ViewHolder1 v = (ViewHolder1) holder;
+            v.bind(movie);
+        }
 
-        holder.bind(movie);
+        if(holder.getItemViewType()==1){
+            ViewHolder2 v = (ViewHolder2) holder;
+            v.bind(movie);
+        }
     }
 
     @Override
@@ -49,11 +67,39 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         return movies.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public int getItemViewType(int position) {
+        if (movies.get(position).getVoteAverage() > 5)
+            return 1;
+        else
+            return 0;
+    }
+
+    //    @NonNull
+//    @Override
+//    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie, parent, false);
+//        view.setBackgroundColor(ContextCompat.getColor(parent.getContext(),R.color.navy));
+//        return new ViewHolder(view);
+//    }
+//
+//    @Override
+//    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+//        Movie movie = movies.get(position);
+//
+//        holder.bind(movie);
+//    }
+
+//    @Override
+//    public int getItemCount() {
+//        return movies.size();
+//    }
+
+    public class ViewHolder1 extends RecyclerView.ViewHolder {
         TextView tvTitle, tvOverview;
         ImageView ivPoster;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder1(@NonNull View itemView) {
             super(itemView);
 
             tvTitle = itemView.findViewById(R.id.tvTitle);
@@ -63,11 +109,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
         public void bind(Movie movie) {
             tvTitle.setText(movie.getTitle());
-            tvTitle.setTextColor(ContextCompat.getColor(itemView.getContext(),R.color.white));
+            tvTitle.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.white));
             tvTitle.setTypeface(Typeface.DEFAULT_BOLD);
-            tvTitle.setTypeface(ResourcesCompat.getFont(itemView.getContext(),R.font.barrio));
+            tvTitle.setTypeface(ResourcesCompat.getFont(itemView.getContext(), R.font.barrio));
             tvOverview.setText(movie.getOverview());
-            tvOverview.setTextColor(ContextCompat.getColor(itemView.getContext(),R.color.white));
+            tvOverview.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.white));
 
             String image;
             int orientation = itemView.getResources().getConfiguration().orientation;
@@ -93,6 +139,32 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                         .transform(new RoundedCorners(20))
                         .into(ivPoster);
             }
+        }
+    }
+
+    public class ViewHolder2 extends RecyclerView.ViewHolder {
+        ImageView ivBackdrop;
+
+        public ViewHolder2(@NonNull View itemView) {
+            super(itemView);
+
+            ivBackdrop = itemView.findViewById(R.id.ivBackdrop);
+        }
+
+        public void bind(Movie movie) {
+
+            String image;
+
+            image = movie.getBackdropPath();
+            Glide
+                    .with(itemView.getContext())
+                    .load(image)
+                    .override(320)
+                    .placeholder(R.drawable.television_placeholder)
+                    .transition(DrawableTransitionOptions.withCrossFade(4000))
+                    .transform(new RoundedCorners(20))
+                    .into(ivBackdrop);
+
         }
     }
 }
