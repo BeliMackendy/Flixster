@@ -1,9 +1,10 @@
 # Flix
 Flix is an app that allows users to browse movies from the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
-
-📝 `NOTE - PASTE PART 2 SNIPPET HERE:` Paste the README template for part 2 of this assignment here at the top. This will show a history of your development process, which users stories you completed and how your app looked and functioned at each step.
-
 ---
+## Flix Part 2
+
+### User Stories
+
 #### REQUIRED (10pts)
 
 - [ ] (8pts) Expose details of movie (ratings using RatingBar, popularity, and synopsis) in a separate activity.
@@ -36,14 +37,22 @@ Flix is an app that allows users to browse movies from the [The Movie Database A
 - [x] (2pts) For popular movies (i.e. a movie voted for more than 5 stars), the full backdrop image is displayed. Otherwise, a poster image, the movie title, and overview is listed. Use Heterogenous RecyclerViews and use different ViewHolder layout files for popular movies and less popular ones.
 
 ### App Walkthough GIF
+<table>
+  <tr>
+    <td>
+      <img src="walkthrough.gif" width=250>
+    </td>
+    <td>
+      <img src="walkthrough_land.gif" width=250>
+    </td>
+  </tr>
+</table>
 
-<img src="walkthough.gif" width=250 style="margin-right:50px">
-<img src="walkthough_land.gif" width=250>
+
 <br>
 
 ### Notes
-Describe any challenges encountered while building the app.
-
+The challenge that I encountered in creating this application was to make the interface heterogeneous and Improve the user interface through styling and coloring by programming.
 ### Open-source libraries used
 
 - [Android Async HTTP](https://github.com/codepath/CPAsyncHttpClient) - Simple asynchronous HTTP requests with JSON parsing
