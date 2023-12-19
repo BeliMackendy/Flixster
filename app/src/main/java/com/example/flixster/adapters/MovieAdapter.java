@@ -37,6 +37,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (viewType == 1) {
             View v1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie_full_backdrop, parent, false);
             v1.setBackgroundColor(ContextCompat.getColor(parent.getContext(),R.color.navy));
+
             viewHolder = new ViewHolder2(v1);
         }
         if (viewType == 0) {
