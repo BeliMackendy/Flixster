@@ -8,15 +8,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
+import com.my_app.flixster.adapters.MovieAdapter;
 import com.my_app.flixster.models.Movie;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Headers;
@@ -37,8 +41,15 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        RecyclerView rvMovies = findViewById(R.id.rvMovie);
 
         AsyncHttpClient client = new AsyncHttpClient();
+
+        movies = new ArrayList<>();
+
+        MovieAdapter adapter = new MovieAdapter(movies);
+        rvMovies.setAdapter(adapter);
+         rvMovies.setLayoutManager(new LinearLayoutManager(this));
 
         client.get(MOVIE_URL, new JsonHttpResponseHandler() {
             @Override
@@ -47,7 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     JSONArray results = jsonObject.getJSONArray("results");
-                    movies = Movie.fromJsonArray(results);
+                    movies.addAll(Movie.fromJsonArray(results));
+                    adapter.notifyDataSetChanged();
+
                     Log.i(TAG, "onSuccess: "+movies.size());
 
                 } catch (JSONException e) {

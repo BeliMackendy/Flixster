@@ -38,9 +38,13 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.constraintlayout)
     implementation(libs.material)
+    implementation(libs.recyclerview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.ext.junit)
 
     implementation(libs.asynchttpclient)
+    implementation("com.github.bumptech.glide:glide:5.0.7")
+    // Glide uses this annotation processor for the generated API -- see https://bumptech.github.io/glide/doc/generatedapi.html
+    annotationProcessor("com.github.bumptech.glide:compiler:5.0.7")
 }
