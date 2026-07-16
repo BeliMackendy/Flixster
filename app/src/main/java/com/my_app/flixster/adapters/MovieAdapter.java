@@ -11,9 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.my_app.flixster.R;
 import com.my_app.flixster.models.Movie;
 
+import com.bumptech.glide.request.target.Target;
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>{
@@ -40,10 +42,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             Glide.with(holder.view.getContext()).
                     load(movie.getPosterPath()).
+                    placeholder(R.drawable.placeholdermovie).
+                    override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).
+                    transition(DrawableTransitionOptions.withCrossFade(5000)).
                     into(holder.poster);
         } else {
             Glide.with(holder.view.getContext()).
                     load(movie.getBackdropPath()).
+                    placeholder(R.drawable.placeholdermovie).
+                    override(900).
+                    transition(DrawableTransitionOptions.withCrossFade(5000)).
                     into(holder.poster);
         }
     }
