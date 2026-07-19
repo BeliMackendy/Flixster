@@ -18,7 +18,7 @@ import com.my_app.flixster.models.Movie;
 import com.bumptech.glide.request.target.Target;
 import java.util.List;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>{
+public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private List<Movie> movies;
     public MovieAdapter(List<Movie> movies){
         this.movies = movies;
@@ -26,40 +26,66 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
 
     @NonNull
     @Override
-    public MovieHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        if(viewType == 1) {
+            View movieView = inflater.inflate(R.layout.item_movie_start, parent, false);
+            return new MovieHolder2(movieView);
+        }
         View movieView = inflater.inflate(R.layout.item_movie, parent, false);
         return new MovieHolder(movieView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Movie movie = movies.get(position);
-
-        holder.title.setText(movie.getTitle());
-        holder.overview.setText(movie.getOverview());
-        int orientation = holder.view.getResources().getConfiguration().orientation;
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-            Glide.with(holder.view.getContext()).
+        if(holder.getItemViewType() == 0){
+            MovieHolder holder1 = (MovieHolder) holder;
+            holder1.title.setText(movie.getTitle());
+            holder1.overview.setText(movie.getOverview());
+            int orientation = holder1.view.getResources().getConfiguration().orientation;
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            Glide.with(holder1.view.getContext()).
                     load(movie.getPosterPath()).
                     placeholder(R.drawable.placeholdermovie).
                     override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).
                     transition(DrawableTransitionOptions.withCrossFade(5000)).
-                    into(holder.poster);
-        } else {
-            Glide.with(holder.view.getContext()).
+                    into(holder1.poster);
+            } else {
+            Glide.with(holder1.view.getContext()).
                     load(movie.getBackdropPath()).
                     placeholder(R.drawable.placeholdermovie).
                     override(900).
                     transition(DrawableTransitionOptions.withCrossFade(5000)).
-                    into(holder.poster);
+                    into(holder1.poster);
+            }
         }
+        if(holder.getItemViewType() == 1) {
+
+            MovieHolder2 holder2 = (MovieHolder2) holder;
+            Glide.with(holder2.view.getContext()).
+                    load(movie.getBackdropPath()).
+                    placeholder(R.drawable.placeholdermovie).
+                    override(900).
+                    transition(DrawableTransitionOptions.withCrossFade(5000)).
+                    into(holder2.poster);
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(movies.get(position).getVoteAverage() > 5)
+        {
+            return 1;
+        }
+        return 0;
     }
 
     @Override
     public int getItemCount() {
         return movies.size();
     }
+
 
     public class MovieHolder extends RecyclerView.ViewHolder {
         public TextView title;
@@ -73,6 +99,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieHolder>
             title = itemView.findViewById(R.id.tv_title);
             overview = itemView.findViewById(R.id.tv_overview);
             poster = itemView.findViewById(R.id.iv_poster);
+        }
+    }
+    public class MovieHolder2 extends RecyclerView.ViewHolder {
+        public ImageView poster;
+        public View  view;
+        public MovieHolder2(@NonNull View itemView) {
+            super(itemView);
+            poster = itemView.findViewById(R.id.iv_backdrop);
+            view = itemView;
         }
     }
 
