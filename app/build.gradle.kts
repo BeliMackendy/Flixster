@@ -47,4 +47,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:5.0.7")
     // Glide uses this annotation processor for the generated API -- see https://bumptech.github.io/glide/doc/generatedapi.html
     annotationProcessor("com.github.bumptech.glide:compiler:5.0.7")
+
+    implementation("org.parceler:parceler-api:1.1.12")
+    annotationProcessor("org.parceler:parceler:1.1.12")
 }

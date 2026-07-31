@@ -3,16 +3,21 @@ package com.my_app.flixster.models;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Parcel
 public class Movie {
     private String title;
     private String overview;
     private String posterPath;
     private String backdropPath;
     private Double voteAverage;
+
+    public Movie() {
+    }
+
     public Movie(JSONObject movie) throws JSONException {
         this.title = movie.getString("title");
         this.overview = movie.getString("overview");
