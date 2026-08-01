@@ -48,6 +48,8 @@ dependencies {
     // Glide uses this annotation processor for the generated API -- see https://bumptech.github.io/glide/doc/generatedapi.html
     annotationProcessor("com.github.bumptech.glide:compiler:5.0.7")
 
-    implementation("org.parceler:parceler-api:1.1.12")
-    annotationProcessor("org.parceler:parceler:1.1.12")
+    implementation("org.parceler:parceler-api:1.1.13")
+    annotationProcessor("org.parceler:parceler:1.1.13")
+
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:13.0.0")
 }

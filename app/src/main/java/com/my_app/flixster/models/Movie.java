@@ -14,6 +14,7 @@ public class Movie {
     private String posterPath;
     private String backdropPath;
     private Double voteAverage;
+    private int movieId;
 
     public Movie() {
     }
@@ -24,6 +25,7 @@ public class Movie {
         this.posterPath = movie.getString("poster_path");
         this.backdropPath = movie.getString("backdrop_path");
         this.voteAverage = movie.getDouble("vote_average");
+        this.movieId = movie.getInt("id");
     }
 
     public String getTitle() {
@@ -53,4 +55,7 @@ public class Movie {
         return movies;
     }
 
+    public int getMovieId() {
+        return movieId;
+    }
 }
