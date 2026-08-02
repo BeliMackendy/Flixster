@@ -34,6 +34,8 @@ public class DetailsActivity extends AppCompatActivity {
 
     YouTubePlayerView youTubePlayerView;
 
+    Movie movie;
+
     public static final String Movie_Url = "https://api.themoviedb.org/3/movie/%d/videos?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
 
 
@@ -52,7 +54,8 @@ public class DetailsActivity extends AppCompatActivity {
         tvOverview = findViewById(R.id.tvOverview);
         rtBar = findViewById(R.id.rtBar);
 
-        Movie movie = Parcels.unwrap(getIntent().getParcelableExtra("movie"));
+        movie = Parcels.unwrap(getIntent().getParcelableExtra("movie"));
+
         tvTitle.setText(movie.getTitle());
         tvOverview.setText(movie.getOverview());
         rtBar.setRating(movie.getVoteAverage().floatValue());
@@ -79,7 +82,7 @@ public class DetailsActivity extends AppCompatActivity {
                         if((object.getString("type").equals("Trailer")) && (object.getString("site").equals("YouTube")))
                         {
                             String videokey= results.getJSONObject(j).getString("key");
-                            InitialVideo(videokey);
+                            InitialVideo(videokey,movie);
                             break;
                         }
                     }
@@ -95,11 +98,18 @@ public class DetailsActivity extends AppCompatActivity {
         });
     }
 
-    private void InitialVideo(String videokey) {
+    private void InitialVideo(String videokey,Movie movie) {
         youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                if(movie.getVoteAverage() > 5)
+                {
+                    youTubePlayer.loadVideo(videokey, 0f);
+                    return;
+                }
+                else {
                 youTubePlayer.cueVideo(videokey, 0f);
+                }
             }
         });
     }
