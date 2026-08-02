@@ -57,6 +57,9 @@ public class DetailsActivity extends AppCompatActivity {
         tvOverview.setText(movie.getOverview());
         rtBar.setRating(movie.getVoteAverage().floatValue());
 
+        String transitionName = "poster_" + movie.getMovieId();
+        ViewCompat.setTransitionName(rtBar, transitionName);
+
         youTubePlayerView = findViewById(R.id.player);
         getLifecycle().addObserver(youTubePlayerView);
 

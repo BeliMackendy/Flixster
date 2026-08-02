@@ -1,5 +1,6 @@
 package com.my_app.flixster.adapters;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -46,8 +49,13 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Movie movie = movies.get(position);
+        String uniqueTransitionName = "poster_" + movie.getMovieId();
+
+
         if(holder.getItemViewType() == 0){
             MovieHolder holder1 = (MovieHolder) holder;
+
+            ViewCompat.setTransitionName(holder1.poster, uniqueTransitionName);
             holder1.title.setText(movie.getTitle());
             holder1.overview.setText(movie.getOverview());
             int orientation = holder1.view.getResources().getConfiguration().orientation;
@@ -72,13 +80,17 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                     Toast.makeText(holder1.view.getContext(), movie.getTitle(), Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(holder1.view.getContext(), DetailsActivity.class);
                     i.putExtra("movie", Parcels.wrap(movie));
-                    holder1.view.getContext().startActivity(i);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) holder1.view.getContext(), holder1.poster, uniqueTransitionName);
+
+                    holder1.view.getContext().startActivity(i,options.toBundle());
                 }
             });
         }
         if(holder.getItemViewType() == 1) {
 
             MovieHolder2 holder2 = (MovieHolder2) holder;
+
+            ViewCompat.setTransitionName(holder2.poster, uniqueTransitionName);
             Glide.with(holder2.view.getContext()).
                     load(movie.getBackdropPath()).
                     placeholder(R.drawable.placeholdermovie).
@@ -91,7 +103,9 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                     Toast.makeText(holder2.view.getContext(), movie.getTitle(), Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(holder2.view.getContext(), DetailsActivity.class);
                     i.putExtra("movie", Parcels.wrap(movie));
-                    holder2.view.getContext().startActivity(i);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) holder2.view.getContext(), holder2.poster, uniqueTransitionName);
+
+                    holder2.view.getContext().startActivity(i,options.toBundle());
                 }
             });
 
