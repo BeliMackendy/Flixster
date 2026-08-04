@@ -17,6 +17,7 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.my_app.flixster.DetailsActivity;
 import com.my_app.flixster.R;
@@ -72,6 +73,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                     load(movie.getBackdropPath()).
                     placeholder(R.drawable.placeholdermovie).
                     override(900).
+                    transform(new RoundedCorners(50)).
                     transition(DrawableTransitionOptions.withCrossFade(5000)).
                     into(holder1.poster);
             }
@@ -96,6 +98,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                     load(movie.getBackdropPath()).
                     placeholder(R.drawable.placeholdermovie).
                     override(900).
+                    transform(new RoundedCorners(50)).
                     transition(DrawableTransitionOptions.withCrossFade(5000)).
                     into(holder2.binding.ivBackdrop);
             holder2.binding.container.setOnClickListener(new View.OnClickListener() {
